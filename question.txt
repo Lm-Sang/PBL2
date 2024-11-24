@@ -1,0 +1,9 @@
+QUE001|TEA001|CHA000|SUB001|What is 2+2?|4|4|3|1|2|1|
+QUE002|TEA001|CHA001|SUB001|What is the capital of France?|3|Paris|HaNoi|Seoul|1|
+QUE003|TEA001|CHA002|SUB001|Which planet is known as the Red Planet?|4|Jupiter|Mars|Earth|All incorrect|2|
+QUE004|TEA001|CHA002|SUB001|What is the largest ocean on Earth?|4|Pacific|Atlantic|Arctic|Indian|1|
+QUE005|TEA001|CHA003|SUB001|Who wrote 'Romeo and Juliet'?|2|Shakespeare|Nguyen Nhat Anh|1|
+QUE006|TEA001|CHA004|SUB001|What is the square root of 16?|4|4|2|9|32|1|
+QUE007|TEA001|CHA005|SUB001|What is the boiling point of water (in Celsius)?|4|100|50|80|1000|1|
+QUE008|TEA001|CHA006|SUB001|Which gas do plants absorb for photosynthesis?|3|Nitrogen|Carbon dioxide|Oxygen|2|
+QUE009|TEA001|CHA006|SUB001|What is the chemical symbol for gold?|4|Fe|Cu|Au|O|3|

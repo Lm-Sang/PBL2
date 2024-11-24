@@ -1,0 +1,7 @@
+CHA000|SUB001|Chapter 1: Greetings|
+CHA001|SUB001|Chapter 2: At School|
+CHA002|SUB001|Chapter 3: My Friends|
+CHA003|SUB001|Chapter 4: My Home|
+CHA004|SUB001|Chapter 5: Things I Do|
+CHA005|SUB001|Chapter 6: Places in My Neighborhood|
+CHA006|SUB001|Chapter 7: My Day|
