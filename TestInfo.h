@@ -175,9 +175,10 @@ void TestManager::loadFromFile()
     while (getline(inFile, line))
     {
         stringstream ss(line);
-        string teacherId, title, totalQuestionStr, password, durationStr, startsAt, endsAt;
+        string id,teacherId, title, totalQuestionStr, password, durationStr, startsAt, endsAt;
 
-        if (!getline(ss, teacherId, ',') ||
+        if (!getline(ss, id, ',') ||
+            !getline(ss, teacherId, ',') ||
             !getline(ss, title, ',') ||
             !getline(ss, totalQuestionStr, ',') ||
             !getline(ss, password, ',') ||

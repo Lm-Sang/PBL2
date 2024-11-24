@@ -189,8 +189,7 @@ void studentManager::loadFromFile()
     while (getline(inFile, line))
     {
         stringstream ss(line);
-        string id, name, username, password;
-        getline(ss, id, ',');
+        string name, username, password;
         getline(ss, name, ',');
         getline(ss, username, ',');
         getline(ss, password);

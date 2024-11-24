@@ -78,7 +78,6 @@ void TaoDeThi(CurrentUser user) {
         cout << "Nhap thoi gian ket thuc (vd: 12:00:00 01/01/2024): ";
         string endTime;
         getline(cin, endTime);
-        cout << "Nhapgsdgasgas " <<endl;
         TestManager testManager;
         cout << user.getId() << endl;
         check = testManager.createTest(user.getId(), name, numQuestions, password, duration, startTime, endTime);
@@ -292,74 +291,7 @@ void ChucNangGV(int currentSelection, CurrentUser user) {
         } 
         else if (NganHangCH) {
             NHCH(user);
-            // QuestionBank q;
-            // SubjectManager sm;
-            // do {
-            //     string id;
-            //     int k;
-            //     system("cls");
-            //     cout << "===== NGAN HANG CAU HOI =====" << endl;
-            //     int x = sm.getSubjectCount();
-            //     for (int i = 0; i < x; i++) {
-            //         cout << (currentSelection == i ? "->" : "  ") << sm.getSubjectById(i).getName() << endl;
-            //     }
-            //     char key = _getch();
-            //     if (key == 72) { 
-            //         currentSelection = (currentSelection - 1 + x) % x;
-            //     } else if (key == 80) {
-            //         currentSelection = (currentSelection + 1) % x;
-            //     } else if (key == 13) { 
-            //         system("cls");
-            //         cout << "===== NGAN HANG CAU HOI =====" << endl;
-            //         cout << sm.getSubjectById(currentSelection).getName() << endl;
-            //         k = currentSelection;
-            //         currentSelection = 0;
-            //         ChapterManager cm;
-            //         LinkList<Chapter> chapterList;
-            //         for (int i = 0; i < cm.getChapterCount(); i++) {
-            //             if (cm.getChapterAt(i).getSubjectId() == sm.getSubjectById(k).getId()) {
-            //                 chapterList.add(cm.getChapterAt(i));
-            //             }
-            //         }
-            //         do {
-            //             system("cls");
-            //             cout << "===== NGAN HANG CAU HOI =====" << endl; 
-            //             for (int i = 0; i < chapterList.getSize(); i++) {
-            //                 cout << (currentSelection == i ? "->" : "  ") << chapterList[i].getName() << endl;
-            //             }   
-            //             char key = _getch();
-            //             if (key == 72) {
-            //                 currentSelection = (currentSelection - 1 + chapterList.getSize()) % chapterList.getSize();
-            //             } else if (key == 80) { 
-            //                 currentSelection = (currentSelection + 1) % chapterList.getSize();
-            //             } else if (key == 13) {
-            //                 system("cls");
-            //                 cout << "===== NGAN HANG CAU HOI =====" << endl;
-            //                 cout << chapterList[currentSelection].getName() << endl;
-            //                 id = chapterList[currentSelection].getId();
-            //                 currentSelection = 0;
-            //                 for (int i = 0; i < q.getQuestionCount(); i++) {
-            //                     if (q.questions[i].getChapterId() == id && q.questions[i].getSubjectId() == sm.getSubjectById(k).getId()) {
-            //                         for (int j = 0; j < q.questions[i].getNumberOfOptions(); j++){
-            //                             cout << j << ". " << q.questions[i].getOption(j) << endl;
-            //                         }
-            //                         cout << "Correct answer: " << q.questions[i].getOption(q.questions[i].getCorrectAnswerId()) << endl;
-            //                     }
-            //                 }
-            //                 cout << "Nhan phim bat ky de tro lai menu..." << endl;
-            //                 _getch();
-            //             }
-            //             else if (key == 27) {
-            //                 currentSelection = 0;
-            //                 break;
-            //             }
-            //         } while (true);
-            //     }
-            //     else if (key == 27) {
-            //         currentSelection = 0;
-            //         break;
-            //     }
-            // } while (true);
+            
             NganHangCH = false;
             break;
         } 
@@ -374,12 +306,41 @@ void ChucNangGV(int currentSelection, CurrentUser user) {
 }
 
 
-void ChucNangHS(int currentSelection){
-    system("cls");
-    cout << "===== HOC SINH =====" << endl;
-    cout << (currentSelection == 0 ? "->" : "  ") << "Lam bai thi" << endl;
-    cout << (currentSelection == 1 ? "->" : "  ") << "Xem lich su cac bai da lam" << endl;
-    cout << (currentSelection == 2 ? "->" : "  ") << "Chinh sua thong tin ca nhan" << endl;
+void ChucNangHS(int currentSelection, CurrentUser user){
+    bool LamDeThi = false;
+    bool XemLichSu = false;
+    bool ChinhSuaTT = false;
+    do {
+        if(!LamDeThi && !XemLichSu && !ChinhSuaTT) {
+            system("cls");
+            cout << "===== HOC SINH =====" << endl;
+            cout << (currentSelection == 0 ? "->" : "  ") << "Lam de thi" << endl;
+            cout << (currentSelection == 1 ? "->" : "  ") << "Xem lich su thi" << endl;
+            cout << (currentSelection == 2 ? "->" : "  ") << "Chinh sua thong tin ca nhan" << endl;
+            char key = _getch();
+            if (key == 72) { 
+                currentSelection = (currentSelection - 1 + 3) % 3;
+            } else if (key == 80) { 
+                currentSelection = (currentSelection + 1) % 3;  
+            } else if (key == 13) {
+                switch (currentSelection) {
+                    case 0: LamDeThi = true; currentSelection = 0; break;
+                    case 1: XemLichSu = true; currentSelection = 0; break;
+                    case 2: ChinhSuaTT = true; currentSelection = 0; break;
+                }
+            }
+        } 
+        else if (LamDeThi) {
+            LamDeThi = false;
+        } 
+        else if (XemLichSu) {
+            XemLichSu = false;
+        } 
+        else if (ChinhSuaTT) {
+            ChinhSuaThongTin(currentSelection, user);
+            ChinhSuaTT = false;
+        }
+    } while (true);
 }
 
 
@@ -463,7 +424,6 @@ int main(){
                         cin >> username;
                         cout << "Mat khau: ";
                         string password = getHiddenPassword();
-                        cin >> password;
                         CurrentUser user;
                         studentManager studentObj;
 
@@ -474,7 +434,7 @@ int main(){
                             cout << "Nhan phim bat ky de tiep tuc..." << endl;
                             _getch();
                             system("cls");
-                            return 0;
+                            ChucNangHS(currentSelection, user);
                         }
                         else {
                             system("cls");
@@ -513,12 +473,10 @@ int main(){
                         system("cls");
                         cout << "===== SIGNUP GIAO VIEN =====" << endl;
                         cout << "Ten giao vien: ";
-                        string name;
-                        cin.ignore(); 
+                        string name; 
                         getline(cin, name);
                         cout << "Ten dang nhap: ";
                         string username;
-                        cin.ignore(); 
                         getline(cin, username);
                         cout << "Mat khau: ";
                         string password = getHiddenPassword();
@@ -547,11 +505,9 @@ int main(){
                         cout << "===== SIGNUP HOC SINH =====" << endl;
                         cout << "Ten hoc sinh: ";
                         string name;
-                        cin.ignore(); 
                         getline(cin, name);
                         cout << "Ten dang nhap: ";
                         string username;
-                        cin.ignore(); 
                         getline(cin, username);
                         cout << "Mat khau: ";
                         string password = getHiddenPassword();
