@@ -24,7 +24,7 @@ private:
     string testId;
     string studentId;
     int studentAnswer[100];
-    vector<string> questionId;
+    LinkList<string> questionId;
     int totalQuestions;
     int correctAnswer;
     int time;
@@ -123,13 +123,11 @@ void StudentAttempt::generateQuestionId()
         LinkList<Question> questionByChapterId = questionBank.getQuestionByChapterId(
             testQuestionSelectionByTestId[i].getChapterId(), questionCount);
 
-        // if (!questionByChapterId || questionCount == 0)
-        // {
-        //     std::cerr << "Không có câu hỏi trong chương " << testQuestionSelectionByTestId[i].getChapterId() << std::endl;
-        //     continue;
-        // }
-
-        vector<Question> questionsByChapterId(questionByChapterId, questionByChapterId + questionCount);
+        LinkList<Question> questionsByChapterId;
+        for (int j = 0; j < questionCount; j++)
+        {
+            questionsByChapterId.add(questionByChapterId[j]);
+        }
         int requiredQuestions = testQuestionSelectionByTestId[i].getNumberOfQuestions();
 
         if (questionCount < requiredQuestions)
@@ -137,11 +135,11 @@ void StudentAttempt::generateQuestionId()
             isNotEnough += requiredQuestions - questionCount;
             for (int j = 0; j < questionCount; j++)
             {
-                questionId.push_back(questionsByChapterId[j].getId());
+                questionId.add(questionsByChapterId[j].getId());
             }
-            while (questionId.size() < requiredQuestions)
+            while (questionId.getSize() < requiredQuestions)
             {
-                questionId.push_back(questionsByChapterId[questionId.size() % questionCount].getId());
+                questionId.add(questionsByChapterId[questionId.getSize() % questionCount].getId());
             }
         }
         else
@@ -158,7 +156,7 @@ void StudentAttempt::generateQuestionId()
 
             for (int j = 0; j < requiredQuestions; j++)
             {
-                questionId.push_back(questionsByChapterId[j].getId());
+                questionId.add(questionsByChapterId[j].getId());
             }
         }
     }
@@ -168,7 +166,7 @@ void StudentAttempt::generateQuestionId()
         std::cerr << "Thiếu tổng cộng " << isNotEnough << " câu hỏi cho bài kiểm tra!" << std::endl;
     }
 
-    int totalQuestions = questionId.size();
+    int totalQuestions = questionId.getSize();
     std::random_device rd;
     std::mt19937 gen(rd());
 
@@ -368,7 +366,7 @@ void StudentAttemptManager::loadFromFile()
 }
 void StudentAttempt::setQuestionId(string questionId)
 {
-    this->questionId.push_back(questionId);
+    this->questionId.add(questionId);
 }
 int StudentAttempt::getStudentAnswer(int index) const
 {
