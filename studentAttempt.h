@@ -7,7 +7,6 @@
 #include "question.h"
 #include "Linklist.h"
 #include <sstream>
-#include <vector>
 #include <bits/stdc++.h>
 #include <ctime>
 #include <random>
@@ -306,8 +305,8 @@ void StudentAttemptManager::loadFromFile()
             string id, testId, studentId, studentAnswer, startsAtStr, finishedAtStr;
             int totalQuestions, correctAnswer;
             time_t startsAt, finishedAt;
-            vector<string> questionIds;
-            vector<int> studentAnswers;
+            LinkList<string> questionIds;
+            LinkList<int> studentAnswers;
 
             getline(ss, id, '|');
             getline(ss, testId, '|');
@@ -319,7 +318,7 @@ void StudentAttemptManager::loadFromFile()
             {
                 string questionId;
                 getline(ss, questionId, '|');
-                questionIds.push_back(questionId);
+                questionIds.add(questionId);
             }
 
             for (int i = 0; i < totalQuestions; ++i)
@@ -327,7 +326,7 @@ void StudentAttemptManager::loadFromFile()
                 int answer;
                 ss >> answer;
                 ss.ignore(1, '|');
-                studentAnswers.push_back(answer);
+                studentAnswers.add(answer);
             }
 
             ss >> correctAnswer;
@@ -492,7 +491,7 @@ LinkList<StudentAttempt> StudentAttemptManager::createAttempt(const string &test
 {
     // if (!validateTestId(testId) || !validateStudentId(studentId))
     // {
-    //     return nullptr;
+    //     return StudentAttempt();
     // }
     StudentAttempt newAttempt(attemptCount, testId, studentId, totalQuestion, time);
     addAttempt(newAttempt);
