@@ -84,7 +84,7 @@ Question::Question()
 Question::Question(const string &id, const string &teacherId, const string &chapterId,const string &subjectId,
                    const string &questionText, int numberOfOptions, LinkList<string> options,
                    int correctAnswerId)
-    : id(id), teacherId(teacherId), chapterId(chapterId), questionText(questionText),
+    : id(id), teacherId(teacherId), chapterId(chapterId), questionText(questionText), subjectId(subjectId),
       numberOfOptions(numberOfOptions), options(options), correctAnswerId(correctAnswerId) {
     
 }
@@ -260,53 +260,63 @@ void QuestionBank::loadFromFile() {
         stringstream ss(line);
         string id, teacherId, chapterId, subjectId, questionText, numberOfOptionsStr, correctAnswerIdStr;
 
+        // Đọc các trường dữ liệu chính
         getline(ss, id, '|');
         getline(ss, teacherId, '|');
         getline(ss, chapterId, '|');
-        getline(ss, subjectId, '|'); // Đọc subjectId
+        getline(ss, subjectId, '|');
         getline(ss, questionText, '|');
         getline(ss, numberOfOptionsStr, '|');
-
-        LinkList<string> optionList;
         int numberOfOptions = stoi(numberOfOptionsStr);
-        string x[10];
-        for (int i = 0; i < numberOfOptions; i++) {
+        LinkList<string> optionList;
+        string option;
 
-            getline(ss, x[i], '|');
-            optionList.add(x[i]);
+        // Đọc các lựa chọn
+        for (int i = 0; i < numberOfOptions; i++) {
+            getline(ss, option, '|');
+            optionList.add(option);
         }
+
+        // Đọc câu trả lời đúng
         getline(ss, correctAnswerIdStr, '|');
         int correctAnswerId = stoi(correctAnswerIdStr) - 1;
-        Question q (id, teacherId, chapterId, subjectId, questionText, numberOfOptions, optionList, correctAnswerId);
 
-        optionList.clear();
+        // Tạo đối tượng Question và thêm vào danh sách
+        Question q(id, teacherId, chapterId, subjectId, questionText, numberOfOptions, optionList, correctAnswerId);
         questions.add(q);
         questionCount++;
     }
+
     inFile.close();
 }
+
 
 void QuestionBank::saveToFile() const {
     ofstream outFile("question.txt");
     if (!outFile.is_open()) {
-        cout << "File not found" << endl;
+        cout << "Cannot open file for writing" << endl;
         return;
     }
 
     for (int i = 0; i < questions.getSize(); i++) {
         const Question &q = questions[i];
-        outFile << q.getId() << "|" << q.getTeacherId() << "|" << q.getChapterId() << "|"
-                << q.getSubjectId() << "|" 
-                << q.getQuestionText() << "|" << q.getNumberOfOptions() << "|" << q.getCorrectAnswerId() << "|";
 
+        // Ghi các trường dữ liệu chính
+        outFile << q.getId() << "|" << q.getTeacherId() << "|" << q.getChapterId() << "|"
+                << q.getSubjectId() << "|" << q.getQuestionText() << "|" << q.getNumberOfOptions() << "|";
+
+        // Ghi các lựa chọn
         for (int j = 0; j < q.getNumberOfOptions(); j++) {
             outFile << q.getOption(j) << "|";
         }
-        outFile << "\n";
+
+        // Ghi câu trả lời đúng
+        outFile << q.getCorrectAnswerId() + 1 << "\n";
     }
 
     outFile.close();
 }
+
 QuestionBank::~QuestionBank() {
     saveToFile();
 }

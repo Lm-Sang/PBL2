@@ -18,7 +18,8 @@ class LinkList {
         Node* head;
         int size;
     public:
-        LinkList();                  
+        LinkList();      
+        LinkList(const LinkList<T>& other);            
         ~LinkList();     
         bool update(int index, const T& newData);   
         void add(const T& value);
@@ -28,6 +29,17 @@ class LinkList {
         T& operator[] (int index) const;   
         void clear();
 };
+
+template <typename T>
+LinkList<T>::LinkList(const LinkList<T>& other) {
+    head = nullptr;
+    size = 0;
+    Node* current = other.head;
+    while (current != nullptr) {
+        add(current->data);
+        current = current->next;
+    }
+}
 
 template <typename T>
 T& LinkList<T>::operator[](int index) const {

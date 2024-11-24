@@ -78,8 +78,11 @@ void TaoDeThi(CurrentUser user) {
         cout << "Nhap thoi gian ket thuc (vd: 12:00:00 01/01/2024): ";
         string endTime;
         getline(cin, endTime);
+        cout << "Nhapgsdgasgas " <<endl;
         TestManager testManager;
+        cout << user.getId() << endl;
         check = testManager.createTest(user.getId(), name, numQuestions, password, duration, startTime, endTime);
+        cout << "Nhan phim bat ky de tiep tuc..." << endl;
         system("cls");
         if (check) {
             cout << "===== TAO DE THI THANH CONG =====" << endl;
@@ -226,22 +229,17 @@ void NHCH(CurrentUser user) {
                     QuestionBank qb;
                     for (int i = 0; i < chapterList.getSize(); i++) {
                         cout << chapterList[i].getName() << endl;
-                        // cout << chap
-                        // cout << qb.getQuestionAt(i).getChapterId() << "/" << chapterList[i].getId() << endl;
-                        cout << qb.getQuestionCount() << endl;
                         for (int j = 0; j < qb.getQuestionCount(); j++) {
-                            cout << "hahaha";
-                        //     if (qb.getQuestionAt(j).getChapterId() == chapterList[i].getId()
-                        //         && qb.getQuestionAt(j).getSubjectId() == subjectList[k].getId() 
-                        //         && qb.getQuestionAt(j).getTeacherId() == user.getId()) {
-                        //         cout << i << endl;
-                        //         // cout << qb.getQuestionAt(j).getQuestionText() << endl;
-                        //         // for (int l = 0; l < qb.getQuestionAt(j).getNumberOfOptions(); l++) {
-                        //         //     cout << qb.getQuestionAt(j).getOption(l) << endl;
-                        //         // }
-                        //         // cout << "Cau tra loi dung: ";
-                        //         // cout << qb.getQuestionAt(j).getOption(qb.getQuestionAt(j).getCorrectAnswerId()) << endl;
-                        //     }
+                            if (qb.getQuestionAt(j).getChapterId() == chapterList[i].getId()
+                                && qb.getQuestionAt(j).getSubjectId() == subjectList[k].getId() 
+                                && qb.getQuestionAt(j).getTeacherId() == user.getId()) {
+                                cout << qb.getQuestionAt(j).getQuestionText() << endl;
+                                for (int l = 0; l < qb.getQuestionAt(j).getNumberOfOptions(); l++) {
+                                    cout << qb.getQuestionAt(j).getOption(l) << endl;
+                                }
+                                cout << "Cau tra loi dung: ";
+                                cout << qb.getQuestionAt(j).getOption(qb.getQuestionAt(j).getCorrectAnswerId()) << endl;
+                            }
                         }
                     }
                     cout << "Nhan phim bat ky de tiep tuc..." << endl;
@@ -527,6 +525,7 @@ int main(){
                         teacherManager teacherObj;
 
                         check = teacherObj.registerTeacher(name, username, password);
+                        cout << check << endl;
                         if (check) {
                             system("cls");
                             cout << "===== DANG KY THANH CONG =====" << endl;
