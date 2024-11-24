@@ -59,6 +59,7 @@ public:
     QuestionBank();
     int getQuestionCount() const;
     Question *getQuestionById(const string &id);
+    LinkList<Question> getQuestionByChapterId(const string &chapterId, int &foundCount) const;
     bool updateQuestion(const string &id, const string &teacherId, const string &chapterId,const string &subjectId,
                         const string &questionText, int numberOfOptions, const string options[],
                         int correctAnswerId);
@@ -185,6 +186,20 @@ bool QuestionBank::addQuestion(const string &teacherId, const string &chapterId,
 
     questions.add(newQuestion);
     return true;
+}
+
+LinkList<Question> QuestionBank::getQuestionByChapterId(const string &chapterId, int &foundCount) const
+{
+    LinkList<Question> foundQuestions;
+    foundCount = 0;
+    for (int i = 0; i < questionCount; ++i)
+    {
+        if (questions[i].getChapterId() == chapterId)
+        {
+            foundQuestions[foundCount++] = questions[i];
+        }
+    }
+    return foundQuestions;
 }
 
 int QuestionBank::getQuestionCount() const {

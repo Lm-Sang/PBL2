@@ -43,7 +43,7 @@ public:
     bool updateTestQuestionSelection(string id, string testId, string chapterId, int numberOfQuestions);
     TestQuestionSelection getTestQuestionSelectionAt(int index);
     TestQuestionSelection getTestQuestionSelection(string id);
-    TestQuestionSelection *getAllTestQuestionSelection();
+    // TestQuestionSelection *getAllTestQuestionSelection();
     TestQuestionSelection *getTestQuestionSelectionByTestId(string testId, int &count);
     int getCount();
     void saveToFile();
@@ -243,10 +243,10 @@ TestQuestionSelection TestQuestionSelectionManager::getTestQuestionSelection(str
     }
     return TestQuestionSelection();
 }
-TestQuestionSelection *TestQuestionSelectionManager::getAllTestQuestionSelection()
-{
-    return manager;
-}
+// TestQuestionSelection *TestQuestionSelectionManager::getAllTestQuestionSelection()
+// {
+//     return manager;
+// }
 int TestQuestionSelectionManager::getCount()
 {
     return count;
