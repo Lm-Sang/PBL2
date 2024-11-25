@@ -179,6 +179,12 @@ void TaoDeThi(CurrentUser user) {
         cout << "Nhap so luong cau hoi: ";
         int numQuestions;
         cin >> numQuestions;
+        cout << "Nhap chuong can thi: ";
+        int chapter;
+        cin >> chapter;
+        stringstream tmp;
+        tmp << "CHA" << setw(3) << setfill('0') << chapter - 1;
+        string chapterStr= tmp.str();
         cout << "Nhap thoi gian lam bai (phut): ";
         int duration;
         cin >> duration;
@@ -192,10 +198,12 @@ void TaoDeThi(CurrentUser user) {
         cout << "Nhap thoi gian ket thuc (vd: 12:00:00 01/01/2024): ";
         string endTime;
         getline(cin, endTime);
-        
         TestManager testManager;
         cout << user.getId() << endl;
+        TestQuestionSelectionManager selectionManager;
         check = testManager.createTest(user.getId(), name, numQuestions, password, duration, startTime, endTime);
+        selectionManager.addTestQuestionSelection(testManager.getTestAt(testManager.getTestCount() - 1).getId(), chapterStr, numQuestions);
+
         cout << "Nhan phim bat ky de tiep tuc..." << endl;
         system("cls");
         if (check) {

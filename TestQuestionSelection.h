@@ -33,9 +33,9 @@ class TestQuestionSelectionManager
 {
 private:
     LinkList<TestQuestionSelection> manager;
-    static int count;
 
 public:
+    static int count;
     TestQuestionSelectionManager(/* args */);
     ~TestQuestionSelectionManager();
     bool addTestQuestionSelection(string testId, string chapterId, int numberOfQuestions);
