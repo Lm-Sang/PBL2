@@ -495,7 +495,7 @@ StudentAttempt StudentAttemptManager::createAttempt(const string &testId, const 
     StudentAttempt newAttempt(attemptCount, testId, studentId, totalQuestion, time);
     attempts.add(newAttempt);
     attemptCount++;
-    saveToFile();
+    // saveToFile();
     return attempts[attemptCount - 1];
 }
 bool StudentAttemptManager::setStudentAnswer(StudentAttempt attempt, int index, int studentAnswer)

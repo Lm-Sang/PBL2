@@ -1,49 +1,123 @@
 #include <iostream>
-#include <thread> // Thư viện cần thiết cho std::thread và std::this_thread
-#include <chrono> // Thư viện cần thiết cho std::chrono
-#include <atomic> // Thư viện cần thiết cho std::atomic
+#include <thread>
+#include <conio.h>
+#include<Windows.h>
+
 using namespace std;
+bool stop = 1;
+struct Hour {
+	int hour;
+	int minute;
+	int second;
+};
 
-atomic<bool> time_up(false); // Biến báo hiệu khi hết giờ
-
-void countdown(int seconds) {
-    while (seconds > 0 && !time_up) {
-        cout << "\rTime remaining: " << seconds << " seconds" << flush;
-        this_thread::sleep_for(chrono::seconds(1)); // Sử dụng std::this_thread để tạm dừng luồng
-        seconds--;
-    }
-    if (seconds == 0) {
-        time_up = true;
-        cout << "\nTime's up!" << endl;
-    }
+char inToA(int k) {
+	switch (k)
+	{
+	case 0:return '0';
+	case 1:return '1';
+	case 2:return '2';
+	case 3:return '3';
+	case 4:return '4';
+	case 5:return '5';
+	case 6:return '6';
+	case 7:return '7';
+	case 8:return '8';
+	case 9:return '9';
+	default:
+		break;
+	}
 }
 
-void ask_question(const string& question, int time_limit) {
-    thread timer(countdown, time_limit); // Khởi chạy bộ đếm thời gian trong luồng riêng
-    string answer;
+void insertarray(char *h, Hour *j) {
+	int bait = 0;
+	bait = j->second;
+	h[7] = inToA(bait % 10);
+	h[6] = inToA(bait /= 10);
 
-    cout << question << endl;
-    cout << "Your answer: ";
-    
-    while (!time_up) {
-        if (cin >> answer) { // Đọc câu trả lời từ người dùng
-            time_up = true; // Dừng bộ đếm thời gian khi người dùng trả lời
-            break;
-        }
-    }
+	bait = j->minute;
+	h[4] = inToA(bait % 10);
+	h[3] = inToA(bait /= 10);
 
-    if (!time_up) {
-        cout << "\nYou answered: " << answer << endl;
-    } else {
-        cout << "\nYou ran out of time!" << endl;
-    }
+	bait = j->hour;
+	h[1] = inToA(bait % 10);
+	h[0] = inToA(bait /= 10);
 
-    timer.join(); // Đợi luồng bộ đếm thời gian kết thúc
 }
 
+bool changetime(Hour *h) {
+	if (h->second > 0) --h->second;
+	else if (h->minute > 0) {
+		h->second = 59;
+		--h->minute;
+	}
+	else if (h->hour > 0)
+	{
+		--h->hour;
+		h->minute = 59;
+		h->second = 59;
+	}
+	else return 0;
+	return 1;
+}
+
+//dung de in ra mot chuoi thay the ham cout
+void WriteBlockChar(char * Arraych,
+	int row, int col,
+	int x, int y,
+	int color)
+{
+	CHAR_INFO *charater = new CHAR_INFO[row*col];
+	for (int i = 0; i < row*col; i++) {
+		charater[i].Attributes = color;
+		charater[i].Char.AsciiChar = Arraych[i];
+	}
+	COORD sizebuff = { col,row };
+	COORD pos = { 0,0 };
+	SMALL_RECT earea = { x,y,x + col - 1,y + row - 1 };
+	WriteConsoleOutput(GetStdHandle(STD_OUTPUT_HANDLE), charater, sizebuff, pos, &earea);
+	delete[] charater;
+}
+
+void printClock() {
+		Hour h = { 1,1,1 };
+		char a[8] = { '0','0',':','0','0',':','0','0'};
+		while (stop)
+		{
+			if (!changetime(&h)) stop = 0;
+			insertarray(a, &h);
+			WriteBlockChar(a, 1, 8, 70, 3,0x004|0x060);
+			Sleep(970);
+		}
+		return;
+}
+void gotoXY(int column, int line)
+{
+	COORD coord;
+	coord.X = column;
+	coord.Y = line;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+void TextColor(int color)
+{
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+}
+void close(DWORD evt) {
+	if (evt == CTRL_CLOSE_EVENT) stop = 0;
+}
 int main() {
-    int time_limit = 10; // Giới hạn thời gian 10 giây cho mỗi câu hỏi
-    ask_question("What is the capital of France?", time_limit);
-    ask_question("What is 2 + 2?", time_limit);
-    return 0;
+	SetConsoleCtrlHandler((PHANDLER_ROUTINE)close, TRUE);
+	thread clock;
+	clock = thread(printClock);
+	int i = 0;
+	while (!_kbhit()&& stop)
+	{
+		Sleep(100);
+		gotoXY(0, 0);
+		TextColor(++i % 14 + 1);
+	}
+	stop = 0;
+	clock.join();
+	return 0;
 }

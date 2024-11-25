@@ -146,10 +146,12 @@ void LamBai(CurrentUser user) {
                 else if (answerStr == "B") answer = 2;
                 else if (answerStr == "C") answer = 3;
                 else if (answerStr == "D") answer = 4;
-                cout << answer  << endl;
                 attemptManager.setStudentAnswer(Attempt, i, answer);
+                cout << Attempt.getStudentAnswer(i) << endl;
                 _getch();
             }
+            Attempt.setFinishedAt(time_t(0));
+            attemptManager.saveToFile();
             cout << "Ban da hoan thanh bai kiem tra!" << endl;
             cout << "So cau tra loi dung: " << Attempt.getCorrectAnswer() << endl;
         }
