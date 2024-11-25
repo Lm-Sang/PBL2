@@ -425,13 +425,11 @@ LinkList<StudentAttempt> StudentAttemptManager::getAttemptsByStudentId(const str
     foundCount = 0;
     for (int i = 0; i < attemptCount; ++i)
     {   
-        cout << "atm count" << attemptCount << endl;
         if (attempts[i].getStudentId() == studentId)
         {
             foundAttempts.add(attempts[i]);
             foundCount++;
         }
-        cout << "doundcount" << foundCount << endl;
     }
     return foundAttempts;
 }

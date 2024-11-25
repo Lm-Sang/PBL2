@@ -78,6 +78,22 @@ void SignupMenu(int currentSelection){
     cout << (currentSelection == 1 ? "->" : "  ") << "Hoc sinh" << endl;
 }
 
+void XemLichSuBailam(CurrentUser user) {
+    system("cls");
+    cout << "===== LICH SU BAI LAM =====" << endl;
+    StudentAttemptManager newManager;
+    int foundCount = 0;
+    LinkList<StudentAttempt> attemptsByStudent = newManager.getAttemptsByStudentId(user.getId(), foundCount);
+    cout << "So luong bai thi cua sinh vien " << user.getId() << ": " << foundCount << endl;
+    for (int i = 0; i < foundCount; i++)
+    {
+        cout << "Bai thi " << attemptsByStudent[i].getId() << ": " << attemptsByStudent[i].getTestId()<< endl;
+        cout << "Diem so: " << attemptsByStudent[i].getCorrectAnswer() << endl;
+    }
+    cout << "Nhan phim bat ky de thoat..." << endl;
+    _getch();
+}
+
 void LamBai(CurrentUser user) {
     bool check = false;
     Test test;
@@ -313,6 +329,7 @@ void NHCH(CurrentUser user) {
                 }
             }
         } else if (ThemCH) {
+            
             ThemCH = false;
         } else if (SuaCH) {
             SuaCH = false;
@@ -460,6 +477,7 @@ void ChucNangHS(int currentSelection, CurrentUser user){
             LamDeThi = false;
         } 
         else if (XemLichSu) {
+            XemLichSuBailam(user);
             XemLichSu = false;
         } 
         else if (ChinhSuaTT) {
