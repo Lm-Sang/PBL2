@@ -78,7 +78,6 @@ public:
     bool addAttempt(const StudentAttempt &attempt);
     int getAttemptCount() const;
 
-    StudentAttempt operator[](int index);
     LinkList<StudentAttempt> getAttemptsByStudentId(const string &studentId, int &foundCount) const;
     StudentAttempt getAttemptById(const string &id);
     LinkList<StudentAttempt> getAttemptByTestId(const string &testId, int &foundCount) const;
@@ -418,10 +417,7 @@ StudentAttempt StudentAttemptManager::getAttemptById(const string &id)
         }
     }
 }
-StudentAttempt StudentAttemptManager::operator[](int index)
-{
-    return attempts[index];
-}
+
 LinkList<StudentAttempt> StudentAttemptManager::getAttemptsByStudentId(const string &studentId, int &foundCount) const
 {
     LinkList<StudentAttempt> foundAttempts;
