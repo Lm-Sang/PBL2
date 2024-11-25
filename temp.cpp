@@ -1,55 +1,49 @@
 #include <iostream>
-#include <iomanip> // std::setw, std::setfill
-#include <cstdlib> // system()
-#ifdef _WIN32
-    #include <windows.h> // Sleep()
-#else
-    #include <unistd.h>  // sleep()
-#endif
- 
+#include <thread> // Thư viện cần thiết cho std::thread và std::this_thread
+#include <chrono> // Thư viện cần thiết cho std::chrono
+#include <atomic> // Thư viện cần thiết cho std::atomic
 using namespace std;
 
-// Hàm hiển thị bộ đếm thời gian trên terminal
-void displayTimer(int seconds, const string& staticContent) {
-    for (int elapsed = 0; elapsed <= seconds; ++elapsed) {
-        // Xóa terminal để cập nhật nội dung
-        #ifdef _WIN32
-            system("cls"); // Windows
-        #else
-            system("clear"); // Unix/Linux/MacOS
-        #endif
+atomic<bool> time_up(false); // Biến báo hiệu khi hết giờ
 
-        // Hiển thị nội dung tĩnh
-        cout << staticContent << endl;
-
-        // Tính và hiển thị thời gian đã trôi qua
-        int hours = elapsed / 3600;
-        int minutes = (elapsed % 3600) / 60;
-        int secs = elapsed % 60;
-
-        cout << "Elapsed Time: "
-             << setw(2) << setfill('0') << hours << ":"
-             << setw(2) << setfill('0') << minutes << ":"
-             << setw(2) << setfill('0') << secs << endl;
-
-        // Dừng chương trình trong 1 giây
-        #ifdef _WIN32
-            Sleep(1000); // Windows: thời gian tính bằng mili-giây
-        #else
-            sleep(1);    // Linux/Unix/MacOS: thời gian tính bằng giây
-        #endif
+void countdown(int seconds) {
+    while (seconds > 0 && !time_up) {
+        cout << "\rTime remaining: " << seconds << " seconds" << flush;
+        this_thread::sleep_for(chrono::seconds(1)); // Sử dụng std::this_thread để tạm dừng luồng
+        seconds--;
+    }
+    if (seconds == 0) {
+        time_up = true;
+        cout << "\nTime's up!" << endl;
     }
 }
 
+void ask_question(const string& question, int time_limit) {
+    thread timer(countdown, time_limit); // Khởi chạy bộ đếm thời gian trong luồng riêng
+    string answer;
+
+    cout << question << endl;
+    cout << "Your answer: ";
+    
+    while (!time_up) {
+        if (cin >> answer) { // Đọc câu trả lời từ người dùng
+            time_up = true; // Dừng bộ đếm thời gian khi người dùng trả lời
+            break;
+        }
+    }
+
+    if (!time_up) {
+        cout << "\nYou answered: " << answer << endl;
+    } else {
+        cout << "\nYou ran out of time!" << endl;
+    }
+
+    timer.join(); // Đợi luồng bộ đếm thời gian kết thúc
+}
+
 int main() {
-    // Nội dung tĩnh sẽ hiển thị cùng với bộ đếm thời gian
-    string staticContent = "=== Welcome to the Timer Program ===\n"
-                           "This program demonstrates a live timer\n";
-
-    // Gọi hàm hiển thị timer
-    int duration = 10; // Thời gian đếm trong giây
-    displayTimer(duration, staticContent);
-
-    cout << "\nTimer completed. Exiting..." << endl;
+    int time_limit = 10; // Giới hạn thời gian 10 giây cho mỗi câu hỏi
+    ask_question("What is the capital of France?", time_limit);
+    ask_question("What is 2 + 2?", time_limit);
     return 0;
 }

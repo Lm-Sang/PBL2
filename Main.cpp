@@ -1,10 +1,12 @@
 #include <iostream>
+#include <cstdlib>
 #include <fstream>
 #include <sstream>
 #include <conio.h>
 #include <ctime>  
 #include <iomanip> 
 #include <string>
+#include <windows.h>
 #include "TestQuestionSelection.h"
 #include "studentAttempt.h"
 #include "CurrentUser.h"
@@ -31,6 +33,28 @@ string getHiddenPassword() {
     }
     cout << endl;
     return password;
+}
+
+void displayTimer(int &seconds) {
+    for (int elapsed = seconds; elapsed >=0; --elapsed) {
+            system("cls"); 
+        
+
+        int hours = elapsed / 3600;
+        int minutes = (elapsed % 3600) / 60;
+        int secs = elapsed % 60;
+
+        cout << "Thoi gian con lai: "
+             << setw(2) << setfill('0') << hours << ":"
+             << setw(2) << setfill('0') << minutes << ":"
+             << setw(2) << setfill('0') << secs << endl;
+
+        
+            Sleep(1000); 
+    }
+        cout << "Ban da het thoi gian lam bai!" << endl;
+        cout << "Nhan phim bat ky de thoat..." << endl;
+        _getch();
 }
 
 void login(int currentSelection){
@@ -95,12 +119,39 @@ void LamBai(CurrentUser user) {
     cout << "Thoi gian ket thuc: " << test.getEndsAt() << endl;
     cout << "Trang thai: " << (test.getStatus() == Test::INCOMING ? "Chua bat dau" : (test.getStatus() == Test::ONGOING ? "Dang lam bai" : "Da ket thuc")) << endl;
     if (test.getStatus() == Test::ONGOING) {
+        QuestionBank questionBank;
         cout << "Nhan Enter de bat dau lam bai!" << endl;
         char key =_getch();
         if (key == 13){
-            system("cls");
             StudentAttemptManager attemptManager;
-            attemptManager.createAttempt(test.getId(), user.getId(), test.getTotalQuestion(), test.getDuration());
+            StudentAttempt Attempt = attemptManager.createAttempt(test.getId(), user.getId(), test.getTotalQuestion(), test.getDuration());
+            int duration = test.getDuration() * 60;
+            for (int i = 0; i < Attempt.getTotalQuestions(); ++i) {
+                system("cls");
+                cout << "===== LAM BAI KIEM TRA =====" << endl;
+                // displayTimer(duration);
+                cout << "Cau " << i + 1 << ": " << questionBank.getQuestionById(Attempt.getQuestionId(i)).getQuestionText() << endl;
+                for (int j = 0; j < questionBank.getQuestionById(Attempt.getQuestionId(i)).getNumberOfOptions(); ++j) {
+                    if (j == 0) cout << "A.";
+                    else if (j == 1) cout << "B.";
+                    else if (j == 2) cout << "C.";
+                    else if (j == 3) cout << "D.";
+                    cout << questionBank.getQuestionById(Attempt.getQuestionId(i)).getOption(j) << endl;
+                }
+                cout << "Cau tra loi cua ban: ";
+                string answerStr;
+                cin >> answerStr;
+                int answer;
+                if (answerStr == "A") answer = 1;
+                else if (answerStr == "B") answer = 2;
+                else if (answerStr == "C") answer = 3;
+                else if (answerStr == "D") answer = 4;
+                cout << answer  << endl;
+                attemptManager.setStudentAnswer(Attempt, i, answer);
+                _getch();
+            }
+            cout << "Ban da hoan thanh bai kiem tra!" << endl;
+            cout << "So cau tra loi dung: " << Attempt.getCorrectAnswer() << endl;
         }
     }
     else if (test.getStatus() == Test::COMPLETED) {

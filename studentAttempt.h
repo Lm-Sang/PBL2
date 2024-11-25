@@ -241,13 +241,13 @@ void StudentAttempt::setCorrectAnswer()
     int correct = 0;
     for (int i = 0; i < totalQuestions; i++)
     {
-        Question *question = questionBank.getQuestionById(questionId[i]);
-        if (question->getCorrectAnswerId() == studentAnswer[i])
+        Question question = questionBank.getQuestionById(questionId[i]);
+        if (question.getCorrectAnswerId() == studentAnswer[i])
         {
             correct++;
         }
     }
-    correctAnswer = correct;
+    this->correctAnswer = correct;
 }
 bool StudentAttempt::setCorretAnswer(int correctAnswer)
 {
@@ -359,7 +359,6 @@ void StudentAttemptManager::loadFromFile()
 
             attempts.add(attempt);
             attemptCount++;
-            cout << "atm count: " << attemptCount << endl;
         }
         inFile.close();
     }
