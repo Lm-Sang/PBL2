@@ -74,7 +74,7 @@ public:
     int getTestCount() const;
 
     Test getTestAt(int index);
-    Test *getTestById(const string testId);
+    Test getTestById(const string testId);
     LinkList <Test> getTestByTeacherId(const string &teacherId, int &count);
     bool deleteTestById(const string testId);
     bool checkPassword(const Test &test, const string &pass) const;
@@ -465,14 +465,14 @@ Test TestManager::getTestAt(int index) {
 }
 
 //TIM KIEM BAI KTRA
-Test* TestManager::getTestById(const string testId) {
+Test TestManager::getTestById(const string testId) {
     for (int i = 0; i < testCount; ++i) {
         if (TestList[i].getId() == testId) {
             TestList[i].updateStatus();
-            return &TestList[i];
+            return TestList[i];
         }
     }
-    return nullptr;
+    return Test();
 }
 
 //XOA BAI KIEM TRA

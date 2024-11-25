@@ -5,6 +5,8 @@
 #include <ctime>  
 #include <iomanip> 
 #include <string>
+#include "TestQuestionSelection.h"
+#include "studentAttempt.h"
 #include "CurrentUser.h"
 #include "chapter.h"
 #include "subject.h"
@@ -53,14 +55,62 @@ void SignupMenu(int currentSelection){
 }
 
 void LamBai(CurrentUser user) {
+    bool check = false;
+    Test test;
+    do {
+        system("cls");
+        cout << "===== LAM BAI KIEM TRA=====" << endl;
+        cout << "Nhap ma de thi: ";
+        string testId;  
+        cin >> testId;
+        TestManager testManager;
+        test = testManager.getTestById(testId);
+        if(test.getId() == "") {
+            cout << "Ma de thi khong ton tai!" << endl;
+            cout << "Nhan phim bat ki de quay lai!...." << endl;
+            _getch();
+        }
+        else {
+            cout << "Nhap mat khau de thi: ";
+            string password;
+            cin >> password;
+            if (test.getPassword() == password) {
+                check = true;
+            }
+            else {
+                cout << "Mat khau khong chinh xac!" << endl;
+                cout << "Nhan phim bat ki de quay lai!...." << endl;
+                _getch();
+            }
+        }
+    }while (!check);
+
     system("cls");
-    cout << "===== LAM BAI KIEM TRA=====" << endl;
-    cout << "Nhap ma de thi: ";
-    string testId;  
-    cin >> testId;
-    cout << "Nhap mat khau de thi: ";
-    string password;
-    cin >> password;
+    cout << "===== THONG TIN BAI KIEM TRA =====" << endl;
+    cout << "Ma de thi: " << test.getId() << endl;
+    cout << "Ten de thi: " << test.getTitle() << endl;
+    cout << "So cau hoi: " << test.getTotalQuestion()<< endl;
+    cout << "Thoi gian lam bai: " << test.getDuration() << " phut" << endl;
+    cout << "Thoi gian bat dau: " << test.getStartsAt() << endl;
+    cout << "Thoi gian ket thuc: " << test.getEndsAt() << endl;
+    cout << "Trang thai: " << (test.getStatus() == Test::INCOMING ? "Chua bat dau" : (test.getStatus() == Test::ONGOING ? "Dang lam bai" : "Da ket thuc")) << endl;
+    if (test.getStatus() == Test::ONGOING) {
+        cout << "Nhan Enter de bat dau lam bai!" << endl;
+        char key =_getch();
+        if (key == 13){
+            system("cls");
+            StudentAttemptManager attemptManager;
+            attemptManager.createAttempt(test.getId(), user.getId(), test.getTotalQuestion(), test.getDuration());
+        }
+    }
+    else if (test.getStatus() == Test::COMPLETED) {
+        cout << "Bai kiem tra da qua han!" << endl;
+    }
+    else if (test.getStatus() == Test::INCOMING) {
+        cout << "Bai kiem tra chua bat dau!" << endl;
+    }
+    cout << "Nhan phim bat ki de quay lai!...." << endl;
+    _getch();
 }
 
 void TaoDeThi(CurrentUser user) {
@@ -342,6 +392,7 @@ void ChucNangHS(int currentSelection, CurrentUser user){
             }
         } 
         else if (LamDeThi) {
+            LamBai(user);
             LamDeThi = false;
         } 
         else if (XemLichSu) {
