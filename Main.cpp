@@ -192,6 +192,7 @@ void TaoDeThi(CurrentUser user) {
         cout << "Nhap thoi gian ket thuc (vd: 12:00:00 01/01/2024): ";
         string endTime;
         getline(cin, endTime);
+        
         TestManager testManager;
         cout << user.getId() << endl;
         check = testManager.createTest(user.getId(), name, numQuestions, password, duration, startTime, endTime);
@@ -233,16 +234,18 @@ void ChinhSuaThongTin(int currentSelection, CurrentUser user){
         } else if (Ten) {
             system("cls");
             cout << "===== CHINH SUA THONG TIN CA NHAN =====" << endl;
-            string newName;
             cout << "Nhap ten moi: ";
+            string newName;
             cin >> newName;
+            string id = user.getId();
+            string password = user.getPassword();
             if (user.getRole() == "teacher") {
                 teacherManager tm;
-                tm.update(user.getId(),user.getPassword(), newName);
+                tm.update(id, password, newName);
             }
             else {
                 studentManager sm;
-                sm.update(user.getId(),user.getPassword(), newName);
+                sm.update(id, password, newName);
             }
             cout << "Ban da doi ten thanh cong!" << endl;
             cout << "Nhan phim bat ky de tiep tuc..." << endl;
@@ -603,6 +606,7 @@ int main(){
                             system("cls");
                             cout << "===== DANG KY THANH CONG =====" << endl;
                             cout << "Nhan phim bat ky de tiep tuc..." << endl;
+                            inGV = false;
                             _getch();
                         }
                         else {
@@ -633,9 +637,8 @@ int main(){
                             system("cls");
                             cout << "===== DANG KY THANH CONG =====" << endl;
                             cout << "Nhan phim bat ky de tiep tuc..." << endl;
+                            inHS = false;
                             _getch();
-                            system("cls");
-                            return 0;
                         }
                         else {
                             system("cls");
@@ -646,6 +649,7 @@ int main(){
                     } while (!check);
                 }
             } while (true);
+        inSignup = false;
         } 
     }while (true);
     return 0;

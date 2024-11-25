@@ -34,21 +34,21 @@ public:
 class teacherManager
 {
 private:
-    static int idCounter;
 
     bool isValidName(const string &name) const;
     bool isUsernameUnique(const string &username) const;
     bool isValidPassword(const string &password) const;
     LinkList <teacher> teacherList;
-    void saveToFile() const;
 
 public:
+    static int idCounter;   
     teacherManager();
     teacher getTeacherAt(int index);
     int getListSize();
     bool registerTeacher(const string &name, const string &username, const string &password);
     bool login(const string &username, const string &password, CurrentUser &user);
-    bool update(const string id, const string &newPassword, const string &newName);
+    bool update(const string id, const string newPassword, const string newName);
+    void saveToFile() const;
     void loadFromFile();
 };
 
@@ -204,16 +204,17 @@ void teacherManager::loadFromFile()
     inFile.close();
 }
 
-bool teacherManager::update(const string id, const string &newPassword, const string &newName)
+bool teacherManager::update(const string id, const string newPassword, const string newName)
 {
-    for (int i = 0; i < this->idCounter; i++)
-        if (teacherList[i].getId() == id && isValidName(newName) && isValidPassword(newPassword))
-        {
+    for (int i = 0; i < idCounter; i++){
+        // if (teacherList[i].getId() == id && isValidName(newName) && isValidPassword(newPassword))
+        if (teacherList[i].getId() == id){
             teacherList[i].setName(newName);
             teacherList[i].setPassword(newPassword);
             saveToFile();
             return true;
         }   
+    }
     return false;
 }
 
