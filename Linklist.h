@@ -28,6 +28,48 @@ class LinkList {
         int getSize() const;       
         T& operator[] (int index) const;   
         void clear();
+        void swapNodes(int index1, int index2) {
+            if (index1 == index2) return;  // Nếu hai chỉ số trùng nhau thì không cần hoán đổi
+
+            // Tìm node tại index1 và index2
+            Node* prev1 = nullptr;
+            Node* node1 = head;
+            for (int i = 0; node1 != nullptr && i < index1; i++) {
+                prev1 = node1;
+                node1 = node1->next;
+            }
+
+            Node* prev2 = nullptr;
+            Node* node2 = head;
+            for (int i = 0; node2 != nullptr && i < index2; i++) {
+                prev2 = node2;
+                node2 = node2->next;
+            }
+
+            // Kiểm tra nếu một trong các node không tồn tại
+            if (node1 == nullptr || node2 == nullptr) {
+                cout << "Invalid indices, one or both nodes do not exist!" << endl;
+                return;
+            }
+
+            // Hoán đổi các node
+            if (prev1 != nullptr) {
+                prev1->next = node2;
+            } else {
+                head = node2;  // Nếu node1 là đầu danh sách, cần cập nhật head
+            }
+
+            if (prev2 != nullptr) {
+                prev2->next = node1;
+            } else {
+                head = node1;  // Nếu node2 là đầu danh sách, cần cập nhật head
+            }
+
+            // Hoán đổi next của các node
+            Node* temp = node1->next;
+            node1->next = node2->next;
+            node2->next = temp;
+        }
 };
 
 template <typename T>

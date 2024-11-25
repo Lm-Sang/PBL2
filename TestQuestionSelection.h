@@ -50,15 +50,6 @@ public:
     void loadFromFile();
 };
 
-
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <iomanip>
-#include "TestQuestionSelection.h"
-using namespace std;
-
-
 TestQuestionSelection::TestQuestionSelection(/* args */)
 {
 }
@@ -196,7 +187,7 @@ bool TestQuestionSelectionManager::addTestQuestionSelection(string testId, strin
     testQuestionSelection.setChapterId(chapterId);
     testQuestionSelection.setNumberOfQuestions(numberOfQuestions);
     testQuestionSelection.setId(count);
-    manager[count] = testQuestionSelection;
+    manager.add(testQuestionSelection);
     count++;
     return true;
 }

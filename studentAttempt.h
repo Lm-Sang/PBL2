@@ -79,11 +79,12 @@ public:
     int getAttemptCount() const;
 
     LinkList<StudentAttempt> getAttemptsByStudentId(const string &studentId, int &foundCount) const;
+    StudentAttempt getAttemptsAt(int index);
     StudentAttempt getAttemptById(const string &id);
     LinkList<StudentAttempt> getAttemptByTestId(const string &testId, int &foundCount) const;
     StudentAttempt getAttemptByQuestionId(const string &questionId);
     bool setStudentAnswer(StudentAttempt attempt, int index, int studentAnswer);
-    LinkList<StudentAttempt> createAttempt(const string &testId, const string &studentId, int totalQuestion, int time);
+    StudentAttempt createAttempt(const string &testId, const string &studentId, int totalQuestion, int time);
     void setFinishedAtForLastAttempt();
 };
 
@@ -114,13 +115,11 @@ void StudentAttempt::generateQuestionId()
         std::cerr << "Khong tim thay " << testId << std::endl;
         return;
     }
-
     for (int i = 0; i < testQuestionSelectionCount; i++)
     {
         int questionCount = 0;
         LinkList<Question> questionByChapterId = questionBank.getQuestionByChapterId(
             testQuestionSelectionByTestId[i].getChapterId(), questionCount);
-
         LinkList<Question> questionsByChapterId;
         for (int j = 0; j < questionCount; j++)
         {
@@ -149,7 +148,7 @@ void StudentAttempt::generateQuestionId()
             {
                 std::uniform_int_distribution<> dis(0, j);
                 int randomIndex = dis(gen);
-                std::swap(questionsByChapterId[j], questionsByChapterId[randomIndex]);
+                questionByChapterId.swapNodes(j, randomIndex);
             }
 
             for (int j = 0; j < requiredQuestions; j++)
@@ -172,10 +171,10 @@ void StudentAttempt::generateQuestionId()
     {
         std::uniform_int_distribution<> dis(0, i);
         int randomIndex = dis(gen);
-        std::swap(questionId[i], questionId[randomIndex]);
+        questionId.swapNodes(i, randomIndex);
     }
 
-    delete[] testQuestionSelectionByTestId; // Giải phóng nếu cần
+    // delete[] testQuestionSelectionByTestId; // Giải phóng nếu cần
 }
 
 StudentAttempt::StudentAttempt(int id, string testId, string studentId, int totalQuestions, int time)
@@ -264,6 +263,8 @@ int StudentAttempt::getTotalQuestions() const
 {
     return totalQuestions;
 }
+
+StudentAttempt StudentAttemptManager::getAttemptsAt(int index) { return attempts[index]; }
 
 // LUU VAO TEP
 void StudentAttemptManager::saveToFile() const
@@ -358,6 +359,7 @@ void StudentAttemptManager::loadFromFile()
 
             attempts.add(attempt);
             attemptCount++;
+            cout << "atm count: " << attemptCount << endl;
         }
         inFile.close();
     }
@@ -423,12 +425,14 @@ LinkList<StudentAttempt> StudentAttemptManager::getAttemptsByStudentId(const str
     LinkList<StudentAttempt> foundAttempts;
     foundCount = 0;
     for (int i = 0; i < attemptCount; ++i)
-    {
+    {   
+        cout << "atm count" << attemptCount << endl;
         if (attempts[i].getStudentId() == studentId)
         {
             foundAttempts.add(attempts[i]);
             foundCount++;
         }
+        cout << "doundcount" << foundCount << endl;
     }
     return foundAttempts;
 }
@@ -483,16 +487,17 @@ bool StudentAttemptManager::validateStudentAnswer(const string &studentAnswer) c
 }
 
 // TAO BAI THI
-LinkList<StudentAttempt> StudentAttemptManager::createAttempt(const string &testId, const string &studentId, int totalQuestion, int time)
+StudentAttempt StudentAttemptManager::createAttempt(const string &testId, const string &studentId, int totalQuestion, int time)
 {
     // if (!validateTestId(testId) || !validateStudentId(studentId))
     // {
     //     return StudentAttempt();
     // }
     StudentAttempt newAttempt(attemptCount, testId, studentId, totalQuestion, time);
-    addAttempt(newAttempt);
+    attempts.add(newAttempt);
+    attemptCount++;
     saveToFile();
-    return attempts;
+    return attempts[attemptCount - 1];
 }
 bool StudentAttemptManager::setStudentAnswer(StudentAttempt attempt, int index, int studentAnswer)
 {

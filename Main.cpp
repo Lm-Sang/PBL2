@@ -52,6 +52,17 @@ void SignupMenu(int currentSelection){
     cout << (currentSelection == 1 ? "->" : "  ") << "Hoc sinh" << endl;
 }
 
+void LamBai(CurrentUser user) {
+    system("cls");
+    cout << "===== LAM BAI KIEM TRA=====" << endl;
+    cout << "Nhap ma de thi: ";
+    string testId;  
+    cin >> testId;
+    cout << "Nhap mat khau de thi: ";
+    string password;
+    cin >> password;
+}
+
 void TaoDeThi(CurrentUser user) {
     bool check = false; // Biến kiểm tra trạng thái thành công
     do {

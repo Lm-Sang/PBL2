@@ -196,7 +196,8 @@ LinkList<Question> QuestionBank::getQuestionByChapterId(const string &chapterId,
     {
         if (questions[i].getChapterId() == chapterId)
         {
-            foundQuestions[foundCount++] = questions[i];
+            foundQuestions.add(questions[i]);
+            foundCount++;
         }
     }
     return foundQuestions;
