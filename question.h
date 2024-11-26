@@ -54,7 +54,7 @@ public:
     LinkList<Question> questions; 
     int questionCount = 0;
     bool addQuestion(const string &teacherId, const string &chapterId,const string &subjectId,
-                     const string &questionText, int numberOfOptions, const string options[],
+                     const string &questionText, int numberOfOptions, LinkList<string> options,
                      int correctAnswerId);
     QuestionBank();
     int getQuestionCount() const;
@@ -161,7 +161,7 @@ void Question::setCorrectAnswerId(int correctAnswerId) {
 }
 
 bool QuestionBank::addQuestion(const string &teacherId, const string &chapterId, const string &subjectId,
-                               const string &questionText, int numberOfOptions, const string options[],
+                               const string &questionText, int numberOfOptions, LinkList<string> options,
                                int correctAnswerId) {
     if (teacherId.empty() || chapterId.empty() || subjectId.empty() || questionText.empty() ||
         numberOfOptions < 2 || correctAnswerId < 0 || correctAnswerId >= numberOfOptions) {
@@ -185,6 +185,7 @@ bool QuestionBank::addQuestion(const string &teacherId, const string &chapterId,
     }
 
     questions.add(newQuestion);
+    saveToFile();
     return true;
 }
 

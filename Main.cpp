@@ -163,8 +163,6 @@ void LamBai(CurrentUser user) {
                 else if (answerStr == "C") answer = 3;
                 else if (answerStr == "D") answer = 4;
                 attemptManager.setStudentAnswer(Attempt, i, answer);
-                cout << Attempt.getStudentAnswer(i) << endl;
-                _getch();
             }
             Attempt.setFinishedAt(time_t(0));
             attemptManager.saveToFile();
@@ -329,7 +327,23 @@ void NHCH(CurrentUser user) {
                 }
             }
         } else if (ThemCH) {
-            
+            // system("cls");
+            // cout << "===== NGAN HANG CAU HOI =====" << endl;
+            // cout << "Nhap mon ban muon them cau hoi: " << endl;
+            // string subjectName;
+            // cin >> subjectName;
+            // cout << "Nhap chuong ban muon them cau hoi: " << endl;
+            // int chapter;
+            // cin >> chapter;
+            // stringstream tmp;
+            // tmp << "CHA" << setw(3) << setfill('0') << chapter - 1;
+            // string chapterStr= tmp.str();
+            // cout << "Nhap cau hoi: " << endl;
+            // string question;
+            // cin.ignore();
+            // getline(cin, question);
+            // cout << "Nhap so luong dap an: " << endl;
+            // int answerCount;
             ThemCH = false;
         } else if (SuaCH) {
             SuaCH = false;
