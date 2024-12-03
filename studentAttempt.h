@@ -22,17 +22,17 @@ private:
     string id;
     string testId;
     string studentId;
-    int studentAnswer[100];
     LinkList<string> questionId;
     int totalQuestions;
     int correctAnswer;
     int time;
-    time_t startsAt;
-    time_t finishedAt;
     void formatId(int id);
     void generateQuestionId();
 
 public:
+    time_t startsAt;
+    time_t finishedAt;
+    int studentAnswer[100];
     StudentAttempt();
     StudentAttempt(int id, string testId, string studentId, int totalQuestions, int time);
     ~StudentAttempt();
@@ -493,7 +493,7 @@ StudentAttempt StudentAttemptManager::createAttempt(const string &testId, const 
     StudentAttempt newAttempt(attemptCount, testId, studentId, totalQuestion, time);
     attempts.add(newAttempt);
     attemptCount++;
-    // saveToFile();
+    saveToFile();
     return attempts[attemptCount - 1];
 }
 bool StudentAttemptManager::setStudentAnswer(StudentAttempt attempt, int index, int studentAnswer)
@@ -503,8 +503,10 @@ bool StudentAttemptManager::setStudentAnswer(StudentAttempt attempt, int index, 
     saveToFile();
     return true;
 }
+
 StudentAttemptManager::~StudentAttemptManager()
 {
+    saveToFile();
 }
 void StudentAttemptManager::setFinishedAtForLastAttempt()
 {

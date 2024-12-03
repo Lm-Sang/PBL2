@@ -158,13 +158,15 @@ void LamBai(CurrentUser user) {
                 string answerStr;
                 cin >> answerStr;
                 int answer;
-                if (answerStr == "A") answer = 1;
-                else if (answerStr == "B") answer = 2;
-                else if (answerStr == "C") answer = 3;
-                else if (answerStr == "D") answer = 4;
-                attemptManager.setStudentAnswer(Attempt, i, answer);
+                if (answerStr == "A") answer = 0;
+                else if (answerStr == "B") answer = 1;
+                else if (answerStr == "C") answer = 2;
+                else if (answerStr == "D") answer = 3;
+                Attempt.setStudentAnswer(i, answer);
+                Attempt.setCorrectAnswer();
             }
-            Attempt.setFinishedAt(time_t(0));
+            time_t currentTime = time(nullptr);
+            Attempt.setFinishedAt(currentTime);
             attemptManager.saveToFile();
             cout << "Ban da hoan thanh bai kiem tra!" << endl;
             cout << "So cau tra loi dung: " << Attempt.getCorrectAnswer() << endl;
