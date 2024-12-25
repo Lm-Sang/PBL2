@@ -234,6 +234,26 @@ void TaoDeThi(CurrentUser user) {
     } while (!check);
 }
 
+void XemDeThi(CurrentUser user) {
+    TestManager tem;
+    LinkList<Test> tests;
+    cout << "Danh sach cac de thi da tao" << endl;
+    for (int i = 0; i < tem.getTestCount(); i++) {
+        if(tem.getTestAt(i).getTeacherId() == user.getId()) {
+            cout << tests[i].getId() << "|" << tests[i].getTitle() << "|" 
+            << tests[i].getTotalQuestion() << "|" << tests[i].getDuration() << "|" 
+            << tests[i].getStartsAt() << "|" << tests[i].getEndsAt() << "|" 
+            << tests[i].getStatus() << endl;
+        }
+    }       
+    cout << "Nhap ma de thi can xem chi tiet: ";
+    string id;
+    cin >> id;
+    studentManager sm;
+    LinkList<student> students;
+    
+}
+
 
 void ChinhSuaThongTin(int currentSelection, CurrentUser user){
     bool Ten = false;
@@ -329,27 +349,59 @@ void NHCH(CurrentUser user) {
                 }
             }
         } else if (ThemCH) {
-            // system("cls");
-            // cout << "===== NGAN HANG CAU HOI =====" << endl;
-            // cout << "Nhap mon ban muon them cau hoi: " << endl;
-            // string subjectName;
-            // cin >> subjectName;
-            // cout << "Nhap chuong ban muon them cau hoi: " << endl;
-            // int chapter;
-            // cin >> chapter;
-            // stringstream tmp;
-            // tmp << "CHA" << setw(3) << setfill('0') << chapter - 1;
-            // string chapterStr= tmp.str();
-            // cout << "Nhap cau hoi: " << endl;
-            // string question;
-            // cin.ignore();
-            // getline(cin, question);
-            // cout << "Nhap so luong dap an: " << endl;
-            // int answerCount;
+            system("cls");
+            cout << "===== NGAN HANG CAU HOI =====" << endl;
+            cout << "Nhap mon ban muon them cau hoi: " << endl;
+            string subjectName;
+            cin >> subjectName;
+            SubjectManager sm;
+            LinkList<Subject> subjectList;
+            string subjectId;
+            for (int i = 0; i < sm.getSubjectCount(); i++) {
+                if(sm.getSubjectAt(i).getName() == subjectName) {
+                    subjectId = sm.getSubjectAt(i).getId();
+                }
+            }
+            cout << "Nhap chuong ban muon them cau hoi: " << endl;
+            int chapter;
+            cin >> chapter;
+            stringstream tmp;
+            tmp << "CHA" << setw(3) << setfill('0') << chapter - 1;
+            string chapterStr= tmp.str();
+            cout << "Nhap cau hoi: " << endl;
+            string question;
+            cin.ignore();
+            getline(cin, question);
+            cout << "Nhap so luong dap an: " << endl;
+            int answerCount;
+            cin >> answerCount;
+            LinkList<string> options;
+            for (int i = 0; i < answerCount; i++) {
+                string option;
+                cout << "Nhap dap an " << i + 1 << ": " ;
+                cin >> option;
+                options.add(option);
+            }
+            cout << "Nhap dap an dung: " << endl;
+            int correctAnswer;
+            cin >> correctAnswer;
+            correctAnswer--;
+            QuestionBank qb;
+            qb.addQuestion(user.getId(), chapterStr, subjectId, question, answerCount, options, correctAnswer);
+            cout << "Nhan phim bat ky de tiep tuc..." << endl;
+            _getch();
             ThemCH = false;
         } else if (SuaCH) {
+
             SuaCH = false;
         } else if (XoaCH) {
+            system("cls");
+            cout << "===== NGAN HANG CAU HOI =====" << endl;
+            cout << "Nhap ma cau hoi ban muon xoa: " ;
+            string tmp;
+            cin >> tmp;
+            QuestionBank qb;
+            qb.deleteQuestion(tmp);
             XoaCH = false;
         } else if (XemCH) {
             SubjectManager sm;
@@ -390,8 +442,13 @@ void NHCH(CurrentUser user) {
                             if (qb.getQuestionAt(j).getChapterId() == chapterList[i].getId()
                                 && qb.getQuestionAt(j).getSubjectId() == subjectList[k].getId() 
                                 && qb.getQuestionAt(j).getTeacherId() == user.getId()) {
-                                cout << qb.getQuestionAt(j).getQuestionText() << endl;
+                                cout << qb.getQuestionAt(j).getId() << ": " << qb.getQuestionAt(j).getQuestionText() << endl;
                                 for (int l = 0; l < qb.getQuestionAt(j).getNumberOfOptions(); l++) {
+                                    if (l == 0) cout << "A. ";
+                                    if (l == 1) cout << "B. ";
+                                    if (l == 2) cout << "C. ";
+                                    if (l == 3) cout << "D. ";
+                                    if (l == 4) cout << "E. ";
                                     cout << qb.getQuestionAt(j).getOption(l) << endl;
                                 }
                                 cout << "Cau tra loi dung: ";
@@ -449,9 +506,7 @@ void ChucNangGV(int currentSelection, CurrentUser user) {
         } 
         else if (NganHangCH) {
             NHCH(user);
-            
             NganHangCH = false;
-            break;
         } 
         else if (XemLichSuBT) {
             XemLichSuBT = false;
