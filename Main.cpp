@@ -236,14 +236,13 @@ void TaoDeThi(CurrentUser user) {
 
 void XemDeThi(CurrentUser user) {
     TestManager tem;
-    LinkList<Test> tests;
     cout << "Danh sach cac de thi da tao" << endl;
     for (int i = 0; i < tem.getTestCount(); i++) {
         if(tem.getTestAt(i).getTeacherId() == user.getId()) {
-            cout << tests[i].getId() << "|" << tests[i].getTitle() << "|" 
-            << tests[i].getTotalQuestion() << "|" << tests[i].getDuration() << "|" 
-            << tests[i].getStartsAt() << "|" << tests[i].getEndsAt() << "|" 
-            << tests[i].getStatus() << endl;
+            cout << tem.getTestAt(i).getId() << "|" << tem.getTestAt(i).getTitle() << "|"
+            << tem.getTestAt(i).getTotalQuestion() << "|" << tem.getTestAt(i).getDuration() << "|"
+            << tem.getTestAt(i).getPassword() << "|"
+            << tem.getTestAt(i).getStartsAt() << "|" << tem.getTestAt(i).getEndsAt() << "|" << endl;
         }
     }       
     cout << "Nhap ma de thi can xem chi tiet: ";
@@ -251,7 +250,18 @@ void XemDeThi(CurrentUser user) {
     cin >> id;
     studentManager sm;
     LinkList<student> students;
-    
+    StudentAttemptManager sam;
+    LinkList<StudentAttempt> attempts;
+    int foundCount;
+    attempts = sam.getAttemptByTestId(id, foundCount);
+    for (int i = 0; i < foundCount; i++) {
+        for (int j = 0; j < sm.getListSize(); j++) {
+            if (sm.getstudentAt(j).getId() == attempts[i].getStudentId()) {
+                cout << sm.getstudentAt(j).getName();
+            }
+        }
+        cout << ". So cau tra loi dung: " << attempts[i].getCorrectAnswer() << endl;
+    }
 }
 
 
@@ -509,6 +519,7 @@ void ChucNangGV(int currentSelection, CurrentUser user) {
             NganHangCH = false;
         } 
         else if (XemLichSuBT) {
+            XemDeThi(user);
             XemLichSuBT = false;
         } 
         else if (ChinhSuaTT) {
