@@ -18,7 +18,7 @@ private:
     string password;
 
 public:
-    student(string name = "", string username = "", string password = "");
+    student(string id = "", string name = "", string username = "", string password = "");
     ~student();
 
     string getId() const;
@@ -44,6 +44,7 @@ private:
 
 public:
     studentManager();
+    ~studentManager();
     student getstudentAt(int index);
     int getListSize();
     bool registerStudent(const string &name, const string &username, const string &password);
@@ -54,8 +55,8 @@ public:
 
 int studentManager::idCounter = 0;
 
-student::student(string name, string username, string password)
-    : name(name), username(username), password(password) {}
+student::student(string id, string name, string username, string password)
+    : id(id), name(name), username(username), password(password) {}
 
 student::~student() {}
 
@@ -82,8 +83,14 @@ bool student::setPassword(string password)
     return true;
 }
 
+
+
 student studentManager::getstudentAt(int index){
     return studentList[index];
+}
+
+studentManager::~studentManager(){
+    saveToFile();
 }
 int studentManager::getListSize(){
     return studentList.getSize();
@@ -136,9 +143,10 @@ bool studentManager::registerStudent(const string &name, const string &username,
     {
         return false;
     }
-
-    student newstudent(name, username, password);
-    newstudent.setId(idCounter);
+    stringstream tmp;
+    tmp << "STD" << setw(3) << setfill('0') << idCounter;
+    string id = tmp.str();
+    student newstudent(id, name, username, password);
     studentList.add(newstudent);
     idCounter++;
 
@@ -169,7 +177,8 @@ void studentManager::saveToFile() const
 
     for (int i = 0; i < idCounter; i++)
     {
-        outFile << studentList[i].getName() << ","
+        outFile << studentList[i].getId() << ","
+                << studentList[i].getName() << ","
                 << studentList[i].getUsername() << ","
                 << studentList[i].getPassword() << endl;
     }
@@ -189,13 +198,13 @@ void studentManager::loadFromFile()
     while (getline(inFile, line))
     {
         stringstream ss(line);
-        string name, username, password;
+        string id, name, username, password;
+        getline (ss, id, ',');
         getline(ss, name, ',');
         getline(ss, username, ',');
         getline(ss, password);
 
-        student newstudent(name, username, password);
-        newstudent.setId(idCounter);
+        student newstudent(id, name, username, password);
         studentList.add(newstudent);
         idCounter++;
     }
@@ -205,12 +214,11 @@ void studentManager::loadFromFile()
 
 bool studentManager::update(const string id, const string &newPassword, const string &newName)
 {
-    for (int i = 0; i < this->idCounter; i++)
-        if (studentList[i].getId() == id && isValidName(newName) && isValidPassword(newPassword))
+    for (int i = 0; i < studentList.getSize(); i++)
+        if (studentList[i].getId() == id )
         {
             studentList[i].setName(newName);
             studentList[i].setPassword(newPassword);
-            saveToFile();
             return true;
         }   
     return false;

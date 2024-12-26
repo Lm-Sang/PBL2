@@ -288,18 +288,19 @@ void ChinhSuaThongTin(int currentSelection, CurrentUser user){
         } else if (Ten) {
             system("cls");
             cout << "===== CHINH SUA THONG TIN CA NHAN =====" << endl;
-            cout << "Nhap ten moi: ";
             string newName;
-            cin >> newName;
+            cout << "Nhap ten moi: ";
+            cin.ignore();
+            getline(cin, newName);
             string id = user.getId();
             string password = user.getPassword();
-            if (user.getRole() == "teacher") {
-                teacherManager tm;
-                tm.update(id, password, newName);
+            teacherManager tm;
+            studentManager sm;
+            if (user.getRole() == "Teacher") {
+                bool ch = tm.update(id, password, newName);
             }
             else {
-                studentManager sm;
-                sm.update(id, password, newName);
+                bool ch = sm.update(id, password, newName);
             }
             cout << "Ban da doi ten thanh cong!" << endl;
             cout << "Nhan phim bat ky de tiep tuc..." << endl;
@@ -311,7 +312,7 @@ void ChinhSuaThongTin(int currentSelection, CurrentUser user){
             if (user.getPassword() == oldPassword) {
                 cout << "Nhap mat khau moi: ";
                 string newPassword = getHiddenPassword();
-                if (user.getRole() == "teacher") {
+                if (user.getRole() == "Teacher") {
                     teacherManager tm;
                     tm.update(user.getId(),newPassword, user.getFullname());
                 }
@@ -386,10 +387,11 @@ void NHCH(CurrentUser user) {
             int answerCount;
             cin >> answerCount;
             LinkList<string> options;
+            cin.ignore();
             for (int i = 0; i < answerCount; i++) {
                 string option;
                 cout << "Nhap dap an " << i + 1 << ": " ;
-                cin >> option;
+                getline(cin, option);
                 options.add(option);
             }
             cout << "Nhap dap an dung: " << endl;

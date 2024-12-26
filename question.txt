@@ -298,4 +298,4 @@ QUE296|TEA000|CHA000|SUB002|My mother’s cooking is _______ your mother’s coo
 QUE297|TEA000|CHA000|SUB002|She is coming ________ than I.|4|earlier|more early|early than|more earlier|1
 QUE298|TEA000|CHA000|SUB002|Health is ________ money.|4|important|important than|more important|more important than|3
 QUE299|TEA000|CHA000|SUB002|The weather today is _____ it was yesterday.|4|bad than|bader than|worse than|worst than|3
-QUE300|TEA001|CHA001|SUB001|ABC|4|||||1
+QUE300|TEA001|CHA001|SUB001|asdf|4|qw e|er|as g|e|3

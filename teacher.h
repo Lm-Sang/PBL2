@@ -18,7 +18,7 @@ private:
     string password;
 
 public:
-    teacher(string name = "", string username = "", string password = "");
+    teacher(string id = "", string name = "", string username = "", string password = "");
     ~teacher();
 
     string getId() const;
@@ -43,6 +43,7 @@ private:
 public:
     static int idCounter;   
     teacherManager();
+    ~teacherManager();
     teacher getTeacherAt(int index);
     int getListSize();
     bool registerTeacher(const string &name, const string &username, const string &password);
@@ -54,8 +55,8 @@ public:
 
 int teacherManager::idCounter = 0;
 
-teacher::teacher(string name, string username, string password)
-    : name(name), username(username), password(password) {}
+teacher::teacher(string id, string name, string username, string password)
+    : id(id), name(name), username(username), password(password) {}
 
 teacher::~teacher() {}
 
@@ -81,6 +82,10 @@ bool teacher::setPassword(string password)
 {
     this->password = password;
     return true;
+}
+
+teacherManager::~teacherManager() {
+    saveToFile();
 }
 
 teacher teacherManager::getTeacherAt(int index){
@@ -137,9 +142,10 @@ bool teacherManager::registerTeacher(const string &name, const string &username,
     {
         return false;
     }
-
-    teacher newTeacher(name, username, password);
-    newTeacher.setId(idCounter);
+    stringstream tmp;
+    tmp << "TEA" << setw(3) << setfill('0') << idCounter;
+    string id = tmp.str();
+    teacher newTeacher(id, name, username, password);
     teacherList.add(newTeacher);
     idCounter++;
 
@@ -153,7 +159,7 @@ bool teacherManager::login(const string &username, const string &password, Curre
     {
         if (teacherList[i].getUsername() == username && teacherList[i].getPassword() == password)
         {
-            user = CurrentUser(teacherList[i].getId(), teacherList[i].getUsername(), teacherList[i].getPassword(), teacherList[i].getName(), "teacher");
+            user = CurrentUser(teacherList[i].getId(), teacherList[i].getUsername(), teacherList[i].getPassword(), teacherList[i].getName(), "Teacher");
             return true;
         }
     }
@@ -170,7 +176,8 @@ void teacherManager::saveToFile() const
 
     for (int i = 0; i < idCounter; i++)
     {
-        outFile << teacherList[i].getName() << ","
+        outFile << teacherList[i].getId() << ","
+                << teacherList[i].getName() << ","
                 << teacherList[i].getUsername() << ","
                 << teacherList[i].getPassword() << endl;
     }
@@ -190,13 +197,13 @@ void teacherManager::loadFromFile()
     while (getline(inFile, line))
     {
         stringstream ss(line);
-        string  name, username, password;
+        string  id, name, username, password;
+        getline(ss, id, ',');
         getline(ss, name, ',');
         getline(ss, username, ',');
         getline(ss, password);
 
-        teacher newTeacher(name, username, password);
-        newTeacher.setId(idCounter);
+        teacher newTeacher(id, name, username, password);
         teacherList.add(newTeacher);
         idCounter++;
     }
@@ -205,15 +212,13 @@ void teacherManager::loadFromFile()
 }
 
 bool teacherManager::update(const string id, const string newPassword, const string newName)
-{
-    for (int i = 0; i < idCounter; i++){
-        // if (teacherList[i].getId() == id && isValidName(newName) && isValidPassword(newPassword))
+{   
+    for (int i = 0; i < teacherList.getSize(); i++){
         if (teacherList[i].getId() == id){
             teacherList[i].setName(newName);
             teacherList[i].setPassword(newPassword);
-            saveToFile();
             return true;
-        }   
+        } 
     }
     return false;
 }

@@ -1,2 +1,1 @@
-
-                cout << questionBank.getQuestionById(Attempt.getQuestionId(i)).getCorrectAnswerId();
+tm.update(id, password, newName);

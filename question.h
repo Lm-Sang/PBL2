@@ -139,9 +139,7 @@ string Question::getOption(int index) const {
 }
 
 void Question::setOption(int index, const string &option) {
-    if (index >= 0 && index < options.getSize()) {
-        options.update(index, option); // Cập nhật option trong LinkList
-    }
+    options.add(option);
 }
 
 int Question::getNumberOfOptions() const {
