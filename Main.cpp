@@ -334,27 +334,24 @@ void ChinhSuaThongTin(int currentSelection, CurrentUser user){
 
 void NHCH(CurrentUser user) {
     bool ThemCH = false;
-    bool SuaCH = false;
     bool XoaCH = false;
     bool XemCH = false;
     int currentSelection = 0;
     do {
-        if (!ThemCH && !SuaCH && !XoaCH && !XemCH) {
+        if (!ThemCH && !XoaCH && !XemCH) {
             system("cls");
             cout << "===== NGAN HANG CAU HOI =====" << endl;
             cout << (currentSelection == 0 ? "->" : "  ") << "Them cau hoi" << endl;
-            cout << (currentSelection == 1 ? "->" : "  ") << "Sua cau hoi" << endl;
-            cout << (currentSelection == 2 ? "->" : "  ") << "Xoa cau hoi" << endl;
-            cout << (currentSelection == 3 ? "->" : "  ") << "Xem cau hoi" << endl;
+            cout << (currentSelection == 1 ? "->" : "  ") << "Xoa cau hoi" << endl;
+            cout << (currentSelection == 2 ? "->" : "  ") << "Xem cau hoi" << endl;
             char key = _getch();
             if (key == 72) {
-                currentSelection = (currentSelection - 1 + 4) % 4;
+                currentSelection = (currentSelection - 1 + 3) % 3;
             } else if (key == 80) {
-                currentSelection = (currentSelection + 1) % 4;
+                currentSelection = (currentSelection + 1) % 3;
             } else if (key == 13) {
                 switch (currentSelection) {
                     case 0: ThemCH = true; currentSelection = 0; break;
-                    case 1: SuaCH = true; currentSelection = 0; break;
                     case 2: XoaCH = true; currentSelection = 0; break;
                     case 3: XemCH = true; currentSelection = 0; break;
                 }
@@ -403,9 +400,7 @@ void NHCH(CurrentUser user) {
             cout << "Nhan phim bat ky de tiep tuc..." << endl;
             _getch();
             ThemCH = false;
-        } else if (SuaCH) {
-
-            SuaCH = false;
+        }
         } else if (XoaCH) {
             system("cls");
             cout << "===== NGAN HANG CAU HOI =====" << endl;
