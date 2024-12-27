@@ -480,42 +480,36 @@ void NHCH(CurrentUser user) {
 
 void ChucNangGV(int currentSelection, CurrentUser user) {
     bool TaoBT = false;
-    bool ChinhSuaBT = false;
     bool NganHangCH = false;
     bool XemLichSuBT = false;
     bool ChinhSuaTT = false;
     
     do {
-        if (!TaoBT && !ChinhSuaBT && !NganHangCH && !XemLichSuBT && !ChinhSuaTT) {
+        if (!TaoBT && !NganHangCH && !XemLichSuBT && !ChinhSuaTT) {
             system("cls");
             cout << "===== GIAO VIEN =====" << endl;
             cout << (currentSelection == 0 ? "->" : "  ") << "Tao de thi" << endl;
-            cout << (currentSelection == 1 ? "->" : "  ") << "Chinh sua de thi" << endl;
-            cout << (currentSelection == 2 ? "->" : "  ") << "Ngan hang cau hoi" << endl;
-            cout << (currentSelection == 3 ? "->" : "  ") << "Xem lich su de thi da tao" << endl;
-            cout << (currentSelection == 4 ? "->" : "  ") << "Chinh sua thong tin ca nhan" << endl;
+            cout << (currentSelection == 1 ? "->" : "  ") << "Ngan hang cau hoi" << endl;
+            cout << (currentSelection == 2 ? "->" : "  ") << "Xem lich su de thi da tao" << endl;
+            cout << (currentSelection == 3 ? "->" : "  ") << "Chinh sua thong tin ca nhan" << endl;
             char key = _getch();
             if (key == 72) { // Arrow Up
-                currentSelection = (currentSelection - 1 + 5) % 5;
+                currentSelection = (currentSelection - 1 + 4) % 4;
             } else if (key == 80) { // Arrow Down
-                currentSelection = (currentSelection + 1) % 5;
+                currentSelection = (currentSelection + 1) % 4;
             } else if (key == 13) { // Enter
                 switch (currentSelection) {
                     case 0: TaoBT = true; currentSelection = 0; break;
-                    case 1: ChinhSuaBT = true; currentSelection = 0; break;
-                    case 2: NganHangCH = true; currentSelection = 0; break;
-                    case 3: XemLichSuBT = true; currentSelection = 0; break;
-                    case 4: ChinhSuaTT = true; currentSelection = 0; break;
+                    case 1: NganHangCH = true; currentSelection = 0; break;
+                    case 2: XemLichSuBT = true; currentSelection = 0; break;
+                    case 3: ChinhSuaTT = true; currentSelection = 0; break;
                 }
             }
         } 
         else if (TaoBT) {
             TaoDeThi(user);
             TaoBT = false;
-        } 
-        else if (ChinhSuaBT) {
-            ChinhSuaBT = false;
-        } 
+        }
         else if (NganHangCH) {
             NHCH(user);
             NganHangCH = false;
