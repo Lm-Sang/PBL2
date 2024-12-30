@@ -352,8 +352,8 @@ void NHCH(CurrentUser user) {
             } else if (key == 13) {
                 switch (currentSelection) {
                     case 0: ThemCH = true; currentSelection = 0; break;
-                    case 2: XoaCH = true; currentSelection = 0; break;
-                    case 3: XemCH = true; currentSelection = 0; break;
+                    case 1: XoaCH = true; currentSelection = 0; break;
+                    case 2: XemCH = true; currentSelection = 0; break;
                 }
             }
         } else if (ThemCH) {
@@ -401,7 +401,7 @@ void NHCH(CurrentUser user) {
             _getch();
             ThemCH = false;
         }
-        } else if (XoaCH) {
+        else if (XoaCH) {
             system("cls");
             cout << "===== NGAN HANG CAU HOI =====" << endl;
             cout << "Nhap ma cau hoi ban muon xoa: " ;

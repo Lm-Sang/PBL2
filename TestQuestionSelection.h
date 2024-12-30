@@ -16,7 +16,7 @@ private:
     int numberOfQuestions;
 
 public:
-    TestQuestionSelection(/* args */);
+    TestQuestionSelection();
     ~TestQuestionSelection();
     bool setTestId(string testId);
     bool setChapterId(string chapterId);
@@ -36,26 +36,23 @@ private:
 
 public:
     static int count;
-    TestQuestionSelectionManager(/* args */);
+    TestQuestionSelectionManager();
     ~TestQuestionSelectionManager();
     bool addTestQuestionSelection(string testId, string chapterId, int numberOfQuestions);
     bool deleteTestQuestionSelection(string id);
     bool updateTestQuestionSelection(string id, string testId, string chapterId, int numberOfQuestions);
     TestQuestionSelection getTestQuestionSelectionAt(int index);
     TestQuestionSelection getTestQuestionSelection(string id);
-    // TestQuestionSelection *getAllTestQuestionSelection();
     TestQuestionSelection *getTestQuestionSelectionByTestId(string testId, int &count);
     int getCount();
     void saveToFile();
     void loadFromFile();
 };
 
-TestQuestionSelection::TestQuestionSelection(/* args */)
-{
-}
+TestQuestionSelection::TestQuestionSelection()
+{}
 TestQuestionSelection::~TestQuestionSelection()
-{
-}
+{}
 bool TestQuestionSelection::setTestId(string testId)
 {
     this->testId = testId;

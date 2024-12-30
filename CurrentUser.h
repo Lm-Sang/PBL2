@@ -12,7 +12,6 @@ private:
     string fullname;
     string role;
 
-    // Constructor 
 
 public:
 

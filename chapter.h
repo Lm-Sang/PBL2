@@ -33,7 +33,6 @@ public:
     void setName(const string &newName);
     string setId(int id);
     bool setId(const string &id);
-    // static void resetCurrentId();
 };
 
 // Lớp ChapterManager
@@ -52,7 +51,6 @@ public:
     bool addChapter(const string &name, const string &subjectId, CurrentUser user);
     const LinkList<Chapter> &getAllChapters() const; // Trả về tham chiếu tới LinkedList
     Chapter getChapterAt(int index) const;
-    Chapter *getChapterById(const int id);
     LinkList<Chapter> getChapterSubject(const string &SubjectId);
     bool updateChapter(const string &id, const string &newName);
     bool deleteChapter(const string &id);
