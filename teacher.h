@@ -34,14 +34,13 @@ public:
 class teacherManager
 {
 private:
-
     bool isValidName(const string &name) const;
     bool isUsernameUnique(const string &username) const;
     bool isValidPassword(const string &password) const;
-    LinkList <teacher> teacherList;
+    LinkList<teacher> teacherList;
 
 public:
-    static int idCounter;   
+    static int idCounter;
     teacherManager();
     ~teacherManager();
     teacher getTeacherAt(int index);
@@ -84,14 +83,16 @@ bool teacher::setPassword(string password)
     return true;
 }
 
-teacherManager::~teacherManager() {
-    saveToFile();
+teacherManager::~teacherManager()
+{
 }
 
-teacher teacherManager::getTeacherAt(int index){
+teacher teacherManager::getTeacherAt(int index)
+{
     return teacherList[index];
 }
-int teacherManager::getListSize(){
+int teacherManager::getListSize()
+{
     return teacherList.getSize();
 }
 teacherManager::teacherManager()
@@ -168,21 +169,44 @@ bool teacherManager::login(const string &username, const string &password, Curre
 
 void teacherManager::saveToFile() const
 {
-    ofstream outFile("teacher.txt");
-    if (!outFile.is_open())
+    try
     {
-        return;
-    }
+        ofstream outFile("teacher.txt");
 
-    for (int i = 0; i < idCounter; i++)
+        if (!outFile.is_open())
+        {
+            cout << "Error opening file for writing!" << endl;
+            return; // Dừng lại nếu tệp không mở được
+        }
+
+        cout << "Saving to file" << endl;
+
+        for (int i = 0; i < idCounter; i++)
+        {
+            outFile << teacherList[i].getId() << ","
+                    << teacherList[i].getName() << ","
+                    << teacherList[i].getUsername() << ","
+                    << teacherList[i].getPassword() << endl;
+            cout << teacherList[i].getId() << ","
+                 << teacherList[i].getName() << ","
+                 << teacherList[i].getUsername() << ","
+                 << teacherList[i].getPassword() << endl;
+        }
+
+        cout << "Saved to file" << endl;
+
+        outFile.close();
+        if (outFile.fail()) // Kiểm tra lỗi sau khi đóng tệp
+        {
+            cout << "Error closing the file!" << endl;
+        }
+        _getch();
+    }
+    catch (exception e)
     {
-        outFile << teacherList[i].getId() << ","
-                << teacherList[i].getName() << ","
-                << teacherList[i].getUsername() << ","
-                << teacherList[i].getPassword() << endl;
+        cout << e.what() << endl;
+        _getch();
     }
-
-    outFile.close();
 }
 
 void teacherManager::loadFromFile()
@@ -197,7 +221,7 @@ void teacherManager::loadFromFile()
     while (getline(inFile, line))
     {
         stringstream ss(line);
-        string  id, name, username, password;
+        string id, name, username, password;
         getline(ss, id, ',');
         getline(ss, name, ',');
         getline(ss, username, ',');
@@ -212,13 +236,16 @@ void teacherManager::loadFromFile()
 }
 
 bool teacherManager::update(const string id, const string newPassword, const string newName)
-{   
-    for (int i = 0; i < teacherList.getSize(); i++){
-        if (teacherList[i].getId() == id){
+{
+    for (int i = 0; i < teacherList.getSize(); i++)
+    {
+        if (teacherList[i].getId() == id)
+        {
             teacherList[i].setName(newName);
             teacherList[i].setPassword(newPassword);
+            saveToFile();
             return true;
-        } 
+        }
     }
     return false;
 }

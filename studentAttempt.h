@@ -84,7 +84,7 @@ public:
     LinkList<StudentAttempt> getAttemptByTestId(const string &testId, int &foundCount) const;
     StudentAttempt getAttemptByQuestionId(const string &questionId);
     bool setStudentAnswer(StudentAttempt attempt, int index, int studentAnswer);
-    StudentAttempt createAttempt(const string &testId, const string &studentId, int totalQuestion, int time);
+    StudentAttempt *createAttempt(const string &testId, const string &studentId, int totalQuestion, int time);
     void setFinishedAtForLastAttempt();
 };
 
@@ -231,10 +231,6 @@ void StudentAttempt::setStudentAnswer(int index, int studentAnswer)
 {
     this->studentAnswer[index] = studentAnswer;
 }
-int StudentAttempt::getSudentAnswer(int index) const
-{
-    return studentAnswer[index];
-}
 void StudentAttempt::setCorrectAnswer()
 {
     QuestionBank questionBank;
@@ -282,9 +278,10 @@ void StudentAttemptManager::saveToFile() const
             {
                 outFile << attempts[i].getQuestionId(j) << "|";
             }
-
             for (int j = 0; j < attempts[i].getTotalQuestions(); ++j)
+            {
                 outFile << attempts[i].getStudentAnswer(j) << "|";
+            }
 
             outFile << attempts[i].getCorrectAnswer() << "|"
                     << attempts[i].getStartsAt() << "|"
@@ -424,7 +421,7 @@ LinkList<StudentAttempt> StudentAttemptManager::getAttemptsByStudentId(const str
     LinkList<StudentAttempt> foundAttempts;
     foundCount = 0;
     for (int i = 0; i < attemptCount; ++i)
-    {   
+    {
         if (attempts[i].getStudentId() == studentId)
         {
             foundAttempts.add(attempts[i]);
@@ -484,7 +481,7 @@ bool StudentAttemptManager::validateStudentAnswer(const string &studentAnswer) c
 }
 
 // TAO BAI THI
-StudentAttempt StudentAttemptManager::createAttempt(const string &testId, const string &studentId, int totalQuestion, int time)
+StudentAttempt *StudentAttemptManager::createAttempt(const string &testId, const string &studentId, int totalQuestion, int time)
 {
     // if (!validateTestId(testId) || !validateStudentId(studentId))
     // {
@@ -494,7 +491,7 @@ StudentAttempt StudentAttemptManager::createAttempt(const string &testId, const 
     attempts.add(newAttempt);
     attemptCount++;
     saveToFile();
-    return attempts[attemptCount - 1];
+    return &attempts[attemptCount - 1];
 }
 bool StudentAttemptManager::setStudentAnswer(StudentAttempt attempt, int index, int studentAnswer)
 {

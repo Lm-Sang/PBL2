@@ -90,7 +90,7 @@ student studentManager::getstudentAt(int index){
 }
 
 studentManager::~studentManager(){
-    saveToFile();
+    
 }
 int studentManager::getListSize(){
     return studentList.getSize();
