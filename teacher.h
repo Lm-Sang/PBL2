@@ -179,7 +179,6 @@ void teacherManager::saveToFile() const
             return; // Dừng lại nếu tệp không mở được
         }
 
-        cout << "Saving to file" << endl;
 
         for (int i = 0; i < idCounter; i++)
         {
@@ -187,25 +186,18 @@ void teacherManager::saveToFile() const
                     << teacherList[i].getName() << ","
                     << teacherList[i].getUsername() << ","
                     << teacherList[i].getPassword() << endl;
-            cout << teacherList[i].getId() << ","
-                 << teacherList[i].getName() << ","
-                 << teacherList[i].getUsername() << ","
-                 << teacherList[i].getPassword() << endl;
         }
 
-        cout << "Saved to file" << endl;
 
         outFile.close();
         if (outFile.fail()) // Kiểm tra lỗi sau khi đóng tệp
         {
             cout << "Error closing the file!" << endl;
         }
-        _getch();
     }
     catch (exception e)
     {
         cout << e.what() << endl;
-        _getch();
     }
 }
 

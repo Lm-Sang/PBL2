@@ -154,6 +154,10 @@ void LamBai(CurrentUser user)
         QuestionBank questionBank;
         cout << "Nhan Enter de bat dau lam bai!" << endl;
         char key = _getch();
+        if (key == 27)
+        {
+            return;
+        }
         if (key == 13)
         {
             StudentAttemptManager attemptManager;
@@ -400,7 +404,6 @@ void ChinhSuaThongTin(int currentSelection, CurrentUser user)
             _getch();
             MKhau = false;
         }
-        cout << "Nhan phim bat ky de tiep tuc..." << endl;
     } while (true);
 }
 
@@ -420,6 +423,10 @@ void NHCH(CurrentUser user)
             cout << (currentSelection == 1 ? "->" : "  ") << "Xoa cau hoi" << endl;
             cout << (currentSelection == 2 ? "->" : "  ") << "Xem cau hoi" << endl;
             char key = _getch();
+            if (key == 27)
+            {
+                return;
+            }
             if (key == 72)
             {
                 currentSelection = (currentSelection - 1 + 3) % 3;
@@ -528,6 +535,10 @@ void NHCH(CurrentUser user)
                     cout << (currentSelection == i ? "->" : "  ") << subjectList[i].getName() << endl;
                 }
                 char key = _getch();
+                if (key == 27)
+                {
+                    return;
+                }
                 if (key == 72)
                 {
                     currentSelection = (currentSelection - 1 + subjectList.getSize()) % subjectList.getSize();
@@ -607,6 +618,9 @@ void ChucNangGV(int currentSelection, CurrentUser user)
             cout << (currentSelection == 2 ? "->" : "  ") << "Xem lich su de thi da tao" << endl;
             cout << (currentSelection == 3 ? "->" : "  ") << "Chinh sua thong tin ca nhan" << endl;
             char key = _getch();
+            if (key == 27) {
+                return;
+            }
             if (key == 72)
             { // Arrow Up
                 currentSelection = (currentSelection - 1 + 4) % 4;
@@ -676,6 +690,10 @@ void ChucNangHS(int currentSelection, CurrentUser user)
             cout << (currentSelection == 1 ? "->" : "  ") << "Xem lich su thi" << endl;
             cout << (currentSelection == 2 ? "->" : "  ") << "Chinh sua thong tin ca nhan" << endl;
             char key = _getch();
+            if (key == 27)
+            {
+                return;
+            }
             if (key == 72)
             {
                 currentSelection = (currentSelection - 1 + 3) % 3;
@@ -732,6 +750,10 @@ int main()
         {
             login(currentSelection);
             char key = _getch();
+            if (key == 27)
+            {
+                break;
+            }
             if (key == 72)
             {
                 currentSelection = (currentSelection - 1 + 2) % 2;
@@ -766,6 +788,10 @@ int main()
                 {
                     LoginMenu(currentSelection);
                     char key = _getch();
+                    if (key == 27)
+                    {
+                        break;
+                    }
                     if (key == 72)
                     {
                         currentSelection = (currentSelection - 1 + 2) % 2;
@@ -869,6 +895,10 @@ int main()
                 {
                     SignupMenu(currentSelection);
                     char key = _getch();
+                    if (key == 27)
+                    {
+                        break;
+                    }
                     if (key == 72)
                     {
                         currentSelection = (currentSelection - 1 + 2) % 2;
